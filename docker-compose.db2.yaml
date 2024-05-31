@@ -1,0 +1,61 @@
+#ddev-generated
+services:
+  db2:
+    container_name: ddev-${DDEV_SITENAME}-db2
+    hostname: ddev-${DDEV_SITENAME}-db2
+    image: icr.io/db2_community/db2
+
+    user: root
+    volumes:
+      - sqlsystem:/var/opt/db2/
+      - .:/mnt/ddev_config
+    restart: "no"
+    ports:
+      - "${DB2_EXTERNAL_PORT}:50000"
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+    environment:
+
+      # Accepts the terms and conditions of the Db2 software contained in this 
+      # image.
+      - LICENSE=accept
+      # Specifies the Db2 instance name.
+      - DB2INSTANCE=db2inst1
+      # Specifies the password of the Db2 instance.
+      - DB2INST1_PASSWORD=password
+      # Creates an initial database with the name provided (leave empty if no
+      # database is needed).
+      - DBNAME=testdb
+      # Sets BLU Acceleration for the Db2 instance.
+      - BLU=false
+      # Sets Oracle compatibility on the instance.
+      - ENABLE_ORACLE_COMPATIBILITY=false
+      # Can be set to YES if there is an existing instance running a new 
+      # container with a higher Db2 level.
+      - UPDATEAVAIL=false
+      # Creates a Data Server Manager repository database.
+      - REPODB=false
+      # Identifies the operating system as MacOS.
+      - IS_OSXFS=false
+      # Only set to false if running Docker for Windows.
+      - PERSISTENT_HOME=true
+      # Configures Db2 HADR for the instance.
+      - HADR_ENABLED=false
+      # Specifies your own provided ETCD key-value store. Enter your endpoints 
+      # with a comma (and no space) as the delimiter. This environment variable 
+      # is required if HADR_ENABLED is set to true.
+      - ETCD_ENDPOINT=
+      # Specifies the username credential for ETCD. If left empty, it will use 
+      # your Db2 instance.
+      - ETCD_USERNAME=
+      # Specifies the password credential for ETCD. If left empty, it will use 
+      # your Db2 instance password.
+      - ETCD_PASSWORD=
+
+  web:
+    links:
+    - db2:db2
+
+volumes:
+  sqlsystem:

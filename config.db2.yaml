@@ -1,0 +1,9 @@
+#ddev-generated
+
+disable_settings_management: true
+omit_containers: [db]
+
+hooks:
+  post-start:
+   - exec: echo export PATH="$PATH:/opt/ibm/clidriver" >> ~/.bashrc
+   - exec: source ~/.bashrc
