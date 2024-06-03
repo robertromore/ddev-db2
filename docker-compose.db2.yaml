@@ -4,7 +4,7 @@ services:
     container_name: ddev-${DDEV_SITENAME}-db2
     hostname: ddev-${DDEV_SITENAME}-db2
     image: icr.io/db2_community/db2
-
+    privileged: true
     user: root
     volumes:
       - sqlsystem:/var/opt/db2/
