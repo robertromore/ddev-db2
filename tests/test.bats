@@ -1,9 +1,9 @@
 setup() {
   set -eu -o pipefail
   export DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )/.."
-  export TESTDIR=~/tmp/test-addon-sqlsrv
+  export TESTDIR=~/tmp/test-addon-db2
   mkdir -p $TESTDIR
-  export PROJNAME=test-addon-sqlsrv
+  export PROJNAME=test-addon-db2
   export DDEV_NON_INTERACTIVE=true
   export DB2_INSTANCE=db2inst1
   export DB2_DATABASE=testdb
@@ -40,9 +40,9 @@ teardown() {
   set -eu -o pipefail
   cd ${TESTDIR} || ( printf "unable to cd to ${TESTDIR}\n" && exit 1 )
   echo "# ddev get robertromore/ddev-db2 with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
-  ddev get robertromore/ddev-sqlsrv
+  ddev get robertromore/ddev-db2
   ddev restart >/dev/null
-  # Checks that the sqlsrv drivers for PHP are installed.
+  # Checks that the db2 drivers for PHP are installed.
   ddev exec "php -i" | grep "pdo_odbc"
   # Checks db2 connection.
   ddev -s db2 exec "su - ${DB2_INSTANCE} -c 'db2 connect to ${DB2_DATABASE}'" | grep ${DB2_DATABASE}
